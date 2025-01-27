@@ -1,0 +1,73 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Bottle {
+  accompaniment: String
+  bottle_id: ID!
+  bottle_name: String!
+  bottles_cellars: [BottleCellar!]
+  carafage: Float
+  degree: Float!
+  entry_date: DateTime!
+  eye_description: String
+  global_description: String
+  global_visibility: Float!
+  grape_varieties: String
+  media: String
+  millesime: Float!
+  mouth_description: String
+  nose_description: String
+  potential_date: DateTime
+  price: Float!
+  price_visibility: Float!
+  quantity: Float!
+  region: String!
+  size: String!
+  temperature: Float
+  type_of_wine: String!
+}
+
+type BottleCellar {
+  bottle_cellar_id: ID!
+  bottles: Bottle!
+  cellars: Cellar!
+}
+
+type Cellar {
+  bottles_cellars: [BottleCellar!]
+  cellar_id: ID!
+  cellar_name: String
+  created_at: DateTime
+  updated_at: DateTime
+  users_cellars: [UserCellar!]
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Query {
+  users: [User!]!
+}
+
+type User {
+  created_at: DateTime!
+  email: String!
+  email_verified: Boolean!
+  firstname: String!
+  image: String
+  lastname: String
+  phone: String
+  status: String
+  updated_at: DateTime
+  user_id: ID!
+  users_cellars: [UserCellar!]
+}
+
+type UserCellar {
+  cellars: Cellar!
+  user_cellar_id: ID!
+  users: User!
+}

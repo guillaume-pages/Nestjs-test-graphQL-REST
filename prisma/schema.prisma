@@ -1,0 +1,74 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model users {
+  email         String         @unique
+  password      String
+  email_verified Boolean       @default(false)
+  image         String?
+  created_at     DateTime        @default(now())
+  updated_at     DateTime?        @updatedAt
+  phone         String?
+  status        String?
+  user_id       String          @id @default(uuid())
+  firstname     String
+  lastname      String?
+  users_cellars users_cellars[]
+}
+
+model cellars {
+  cellar_id     String          @id @default(uuid())
+  cellar_name   String?         @db.VarChar
+  created_at    DateTime?       @db.Timestamp(6)
+  updated_at    DateTime?       @db.Timestamp(6)
+  users_cellars users_cellars[]
+  bottles_cellars bottles_cellars[]
+}
+
+model bottles {
+  bottle_id          String    @id @default(uuid())
+  bottle_name        String    @db.VarChar
+  millesime          Int
+  type_of_wine       String    @db.VarChar
+  size               String    @db.VarChar
+  grape_varieties    Json?      @db.Json
+  region             String    @db.VarChar
+  eye_description    String?
+  nose_description   Json?     @db.Json
+  mouth_description  Json?     @db.Json
+  carafage           Int?
+  temperature        Int?
+  degree             Float
+  accompaniment      Json?     @db.Json
+  media              String?
+  price              Float
+  price_visibility   Int
+  global_description String?
+  entry_date         DateTime  @db.Timestamp(6)
+  potential_date     DateTime? @db.Timestamp(6)
+  quantity           Int
+  global_visibility  Int
+  bottles_cellars    bottles_cellars[]
+}
+
+model users_cellars {
+  user_cellar_id String  @id @default(uuid())
+  user_id        String
+  cellar_id      String
+  cellars        cellars @relation(fields: [cellar_id], references: [cellar_id], onDelete: NoAction, onUpdate: NoAction)
+  users          users   @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model bottles_cellars {
+  bottle_cellar_id String  @id @default(uuid())
+  bottle_id        String
+  cellar_id        String
+  bottles          bottles @relation(fields: [bottle_id], references: [bottle_id], onDelete: NoAction, onUpdate: NoAction)
+  cellars          cellars @relation(fields: [cellar_id], references: [cellar_id], onDelete: NoAction, onUpdate: NoAction)
+}
